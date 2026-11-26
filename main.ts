@@ -18,9 +18,14 @@ const LINE =
   "One star: Earth rations food by height \u2014 small humans get small plates, as if hunger were measured in centimetres \u2014 but the chicken nuggets were so good I shrank myself to order off the kids' menu.";
 
 // Runtime mirror of the sealed gate: refuse to write anything invalid
-// rather than submit a file the judge would score 0.
+// rather than submit a file the judge would score 0. The gate also
+// requires one sentence, so a stray line break inside the line is a
+// failure too — the judge compares exactly what the file holds.
 if (LINE.length < 1 || LINE.length > 200 || LINE.trim().length === 0) {
   throw new Error(`entry line fails the 1-200 character gate: ${LINE.length} chars`);
+}
+if (/[\r\n]/.test(LINE)) {
+  throw new Error("entry line must be a single sentence on one line");
 }
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR;
